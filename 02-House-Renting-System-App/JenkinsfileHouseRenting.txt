@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[url: 'https://github.com/ZenAlforo/CI_CD_Jenkins.git']],
+                    extensions: [
+                        [$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [
+                            [path: '02-House-Renting-System-App']
+                        ]]
+                    ]
+                ])
+            }
+        }
+
+        stage("Restore") {
+            steps {
+                dir('02-House-Renting-System-App') {
+                    bat "dotnet restore HouseRentingSystem.sln"
+                }
+            }
+        }
+
+        stage("Build") {
+            steps {
+                dir('02-House-Renting-System-App') {
+                    bat "dotnet build HouseRentingSystem.sln -c Release"
+                }
+            }
+        }
+
+        stage("Test") {
+            steps {
+                dir('02-House-Renting-System-App') {
+                    bat "dotnet test HouseRentingSystem.Tests/HouseRentingSystem.Tests.csproj"
+                }
+            }
+        }
+    }
+}
