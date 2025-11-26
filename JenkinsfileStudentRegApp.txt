@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION = '25.2.1'
+        NODE_VERSION = 'NodeJS 25.2.1'
         SERVICE_ID = 'render-service-id'
         RENDER_API_KEY = 'render-api-key'
     }
