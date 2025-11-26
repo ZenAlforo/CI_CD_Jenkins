@@ -20,17 +20,21 @@ pipeline {
 
         stage("Install Dependencies") {
             steps {
-                bat "npm install"
-                bat "npm install -g wait-on kill-port"
+                dir('01-Student-Registry-App') {
+                    bat "npm install"
+                    bat "npm install -g wait-on kill-port"
+                }
             }
         }
 
         stage("Run tests") {
             steps {
-                bat "start /b npm run start"
-                bat "wait-on http://localhost:8081"
-                bat "npm test"
-                bat "kill-port 8081"
+                dir('01-Student-Registry-App') {
+                    bat "start /b npm run start"
+                    bat "wait-on http://localhost:8081"
+                    bat "npm test"
+                    bat "kill-port 8081"
+                }
             }
         }
     }
